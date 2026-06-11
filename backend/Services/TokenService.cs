@@ -19,7 +19,7 @@ namespace WarungApi.Services
 
         public TokenService(IConfiguration config)
         {
-            var tokenKey = config["Jwt:Key"] ?? "SuperSecretKeyForTokoWarung2026SecureLongString";
+            var tokenKey = config["Jwt:Key"] ?? "SuperSecretKeyForTokoWarung2026SecureLongStringAndItNeedsToBeAtLeast64BytesLongForSha512!";
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
             _issuer = config["Jwt:Issuer"] ?? "WarungApi";
             _audience = config["Jwt:Audience"] ?? "WarungWebAndMobile";
