@@ -72,9 +72,16 @@ namespace WarungApi.Controllers
         public async Task<ActionResult<Order>> Create(OrderCreateDto createDto)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var roleClaim = User.FindFirst(ClaimTypes.Role)?.Value;
+
             if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
             {
                 return Unauthorized();
+            }
+
+            if (roleClaim != "Customer")
+            {
+                return BadRequest(new { Message = "Hanya akun dengan peran Customer yang dapat melakukan pembelian." });
             }
 
             var orderItems = new List<OrderItem>();
