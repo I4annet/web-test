@@ -115,7 +115,11 @@ export const AdminDashboard: React.FC = () => {
       }
       setIsModalOpen(false);
     } catch (err: any) {
-      setFormError(err.message);
+      if (err.message === 'Unauthorized' || err.message === 'Forbidden') {
+        setFormError('Sesi Anda telah berakhir atau Anda tidak memiliki hak akses Admin. Silakan login ulang.');
+      } else {
+        setFormError(err.message);
+      }
     }
   };
 

@@ -26,6 +26,11 @@ export const Cart: React.FC = () => {
       return;
     }
 
+    if (user.role !== 'Customer') {
+      setValidationError('Hanya akun dengan peran Customer yang dapat melakukan pembelian.');
+      return;
+    }
+
     if (!address.trim() || !phone.trim()) {
       setValidationError('Alamat pengiriman dan nomor telepon wajib diisi.');
       return;

@@ -37,7 +37,11 @@ export const Orders: React.FC = () => {
       const data = await api.get<Order[]>('/order');
       setOrders(data);
     } catch (err: any) {
-      setError(err.message);
+      if (err.message === 'Unauthorized' || err.message === 'Forbidden') {
+        setError('Sesi Anda telah berakhir. Silakan login ulang.');
+      } else {
+        setError(err.message);
+      }
     } finally {
       setLoading(false);
     }

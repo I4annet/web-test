@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useProductStore } from '../stores/productStore';
 import type { Product } from '../stores/productStore';
 import { useCartStore } from '../stores/cartStore';
+import { useAuthStore } from '../stores/authStore';
 import { Search, Plus, Check } from 'lucide-react';
 
 const CATEGORIES = ['Semua', 'Bahan Pokok', 'Makanan Instan', 'Minuman', 'Bumbu Dapur'];
@@ -9,6 +10,7 @@ const CATEGORIES = ['Semua', 'Bahan Pokok', 'Makanan Instan', 'Minuman', 'Bumbu 
 export const Products: React.FC = () => {
   const { products, fetchProducts, loading } = useProductStore();
   const { addItem } = useCartStore();
+  const { user } = useAuthStore();
   
   const [selectedCategory, setSelectedCategory] = useState('Semua');
   const [searchQuery, setSearchQuery] = useState('');
@@ -149,9 +151,10 @@ export const Products: React.FC = () => {
                     </span>
                     <button
                       onClick={() => handleAddToCart(prod)}
-                      disabled={isOutOfStock}
+                      disabled={isOutOfStock || user?.role === 'Admin'}
+                      title={user?.role === 'Admin' ? 'Admin tidak dapat melakukan pembelian' : ''}
                       className={`p-2 sm:p-2.5 rounded-xl transition cursor-pointer shadow-sm ${
-                        isOutOfStock
+                        (isOutOfStock || user?.role === 'Admin')
                           ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
                           : isAdded
                           ? 'bg-emerald-600 text-white'
