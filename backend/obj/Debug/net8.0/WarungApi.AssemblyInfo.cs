@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WarungApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9b3fc8ebfbc631ed2997beeb30fa2e8e049697f6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1144d964b105ceac583c2f2a4df41b5a9819f5e7")]
 [assembly: System.Reflection.AssemblyProductAttribute("WarungApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WarungApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

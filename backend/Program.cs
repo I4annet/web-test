@@ -125,17 +125,35 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    try
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    var context = services.GetRequiredService<WarungDbContext>();
+    
+    int maxRetries = 10;
+    int delayMs = 3000;
+    for (int i = 1; i <= maxRetries; i++)
     {
-        var context = services.GetRequiredService<WarungDbContext>();
-        context.Database.EnsureCreated();
-        DbSeeder.Seed(context);
-    }
-    catch (Exception ex)
-    {
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Error creating or seeding database.");
+        try
+        {
+            logger.LogInformation("Attempting to connect and seed database (Attempt {Attempt}/{MaxRetries})...", i, maxRetries);
+            context.Database.EnsureCreated();
+            DbSeeder.Seed(context);
+            logger.LogInformation("Database created and seeded successfully.");
+            break;
+        }
+        catch (Exception ex)
+        {
+            logger.LogWarning("Attempt {Attempt} failed to initialize database: {Message}", i, ex.Message);
+            if (i == maxRetries)
+            {
+                logger.LogError(ex, "Error creating or seeding database after maximum retries.");
+            }
+            else
+            {
+                Thread.Sleep(delayMs);
+            }
+        }
     }
 }
 
-app.Run("http://localhost:5000");
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+app.Run($"http://0.0.0.0:{port}");
